@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+### BEGIN Git_Editor.Selector CONFIGURATION
+
+# Define the EDITORS array with supported editors
 EDITORS=(
   "VS Code:/Applications/Visual Studio Code.app/Contents/MacOS/Electron:code -w"
   "Zed:zed:zed -w"
@@ -103,3 +106,5 @@ git_commit() {
 
 # Alias for the custom commit function
 alias gcommit='git_commit'
+
+### END Git_Editor.Selector CONFIGURATION
