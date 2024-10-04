@@ -1,5 +1,23 @@
 #!/bin/zsh
 
+EDITORS=(
+  "VS Code:/Applications/Visual Studio Code.app/Contents/MacOS/Electron:code -w"
+  "Zed:zed:zed -w"
+  "IntelliJ:idea:idea -w"
+  "PyCharm:pycharm:pycharm -w"
+  "Eclipse:eclipse:eclipse -w"
+  "Sublime Text:subl:subl -w"
+  "Atom:/Applications/Atom.app/Contents/MacOS/Atom:atom -w"
+  "WebStorm:/Applications/WebStorm.app/Contents/MacOS/WebStorm:webstorm -w"
+  "Rider:/Applications/Rider.app/Contents/MacOS/Rider:rider -w"
+  "NetBeans:/Applications/NetBeans.app/Contents/MacOS/netbeans:netbeans"
+  "Brackets:/Applications/Brackets.app/Contents/MacOS/Brackets:brackets -w"
+  "BBEdit:/Applications/BBEdit.app/Contents/MacOS/BBEdit:bbedit -w"
+  "Nova:/Applications/Nova.app/Contents/MacOS/Nova:nova -w"
+  "Light Table:/Applications/Light\ Table.app/Contents/MacOS/Light\ Table:lighttable -w"
+  "Vim:vim:vim"
+)
+
 git_commit() {
   echo "Checking for running editors"
   echo "🏃️..."
