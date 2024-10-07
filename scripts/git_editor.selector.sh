@@ -104,7 +104,14 @@ git_commit() {
   fi
 }
 
-# Alias for the custom commit function
-alias gcommit='git_commit'
+# Define the 'g' function
+g() {
+  if [[ "$1" == "commit" ]]; then
+    shift  # Remove 'commit' from the arguments
+    git_commit "$@"  # Call the custom git_commit function
+  else
+    git "$@"  # Call the regular git command with all arguments
+  fi
+}
 
 ### END Git_Editor.Selector CONFIGURATION
