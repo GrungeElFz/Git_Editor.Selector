@@ -130,8 +130,8 @@ git_rebase_i() {
   if (( num_running_editors > 1 )); then
     echo "Multiple editors are running. Please choose the editor for git rebase -i:"
 
-    for i in $(seq 1 $num_running_editors); do
-      editor_info="${running_editors[$i-1]}"
+    for i in {1..$num_running_editors}; do
+      editor_info="${running_editors[$i]}"
       editor_name="${editor_info%%:*}"
       echo "($i) $editor_name"
     done
@@ -146,7 +146,7 @@ git_rebase_i() {
         echo "Aborting git rebase."
         return 1  # Exit the function without rebasing
       elif [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= num_running_editors )); then
-        selected_editor_info="${running_editors[$choice-1]}"
+        selected_editor_info="${running_editors[$choice]}"
         selected_editor_name="${selected_editor_info%%:*}"
         selected_editor_command="${selected_editor_info#*:}"
 
@@ -160,8 +160,8 @@ git_rebase_i() {
         echo "🫥 Invalid choice."
         echo "Please enter a valid editor number or 'n' to abort."
         # Re-display the list of editors
-        for i in $(seq 1 $num_running_editors); do
-          editor_info="${running_editors[$i-1]}"
+        for i in {$num_running_editors}; do
+          editor_info="${running_editors[$i]}"
           editor_name="${editor_info%%:*}"
           echo "($i) $editor_name"
         done
@@ -170,7 +170,7 @@ git_rebase_i() {
 
   # If one editor is running, use it
   elif (( num_running_editors == 1 )); then
-    selected_editor_info="${running_editors[0]}"
+    selected_editor_info="${running_editors[1]}"
     selected_editor_name="${selected_editor_info%%:*}"
     selected_editor_command="${selected_editor_info#*:}"
 
