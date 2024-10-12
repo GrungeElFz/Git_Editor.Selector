@@ -2,10 +2,12 @@
 
 ### BEGIN Git_Editor.Selector CONFIGURATION
 
+
 # Define the EDITORS array with supported editors
 EDITORS=(
   "VS Code:/Applications/Visual Studio Code.app/Contents/MacOS/Electron:code -w"
   "Zed:zed:zed -w"
+  "Cursor:/Applications/Cursor.app/Contents/MacOS/Cursor:cursor -w"
   "IntelliJ:idea:idea -w"
   "PyCharm:pycharm:pycharm -w"
   "Eclipse:eclipse:eclipse -w"
