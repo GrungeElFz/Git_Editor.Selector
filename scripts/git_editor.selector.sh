@@ -23,11 +23,15 @@ EDITORS=(
   "Vim:vim:vim"
 )
 
-git_commit() {
+# Helper Function
+display_checking_message() {
   echo "Checking for running editors"
   echo "🏃️..."
   echo ""
+}
 
+git_commit() {
+  display_checking_message
   running_editors=()
 
   # Loop through each editor and check if it's running
@@ -107,10 +111,7 @@ git_commit() {
 }
 
 git_rebase_i() {
-  echo "Checking for running editors"
-  echo "🏃️..."
-  echo ""
-
+  display_checking_message
   running_editors=()
 
   # Loop through each editor and check if it's running
