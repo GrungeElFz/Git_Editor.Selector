@@ -23,7 +23,7 @@ EDITORS=(
   "Vim:vim:vim"
 )
 
-# Helper Function
+# Helper Functions
 display_checking_message() {
   echo "Checking for running editors"
   echo "🏃️..."
