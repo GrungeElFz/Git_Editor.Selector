@@ -49,55 +49,93 @@ detect_running_editors() {
   num_running_editors=${#running_editors[@]}
 }
 
+prompt_editor_selection() {
+  local action="$1"
+  echo "Multiple editors are running. Please choose the editor for $action:"
+
+  for (( i=0; i<num_running_editors; i++ )); do
+    index=$((i + 1))
+    editor_info="${running_editors[$i]}"
+    editor_name="${editor_info%%:*}"
+    echo "($index) $editor_name"
+  done
+
+  while true; do
+    # Read user input
+    read "choice? 👉 "
+
+    # Validate user input and choose the editor
+    if [[ "$choice" =~ ^[nN]$ ]]; then
+      echo ""
+      echo "Aborting $action."
+      return 1  # Indicate that the user aborted the action
+    elif [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= num_running_editors )); then
+      selected_index=$((choice - 1))
+      selected_editor_info="${running_editors[$selected_index]}"
+      selected_editor_name="${selected_editor_info%%:*}"
+      selected_editor_command="${selected_editor_info#*:}"
+      return 0  # Successful selection
+    else
+      echo ""
+      echo "🫥 Invalid choice."
+      echo "Please enter a valid editor number or 'n' to abort."
+    fi
+  done
+}
+
+prompt_editor_selection() {
+  local action="$1"
+  echo "Multiple editors are running. Please choose the editor for $action:"
+
+  for (( i=0; i<num_running_editors; i++ )); do
+    index=$((i + 1))
+    editor_info="${running_editors[$i]}"
+    editor_name="${editor_info%%:*}"
+    echo "($index) $editor_name"
+  done
+
+  while true; do
+    # Read user input
+    read "choice? 👉 "
+
+    # Validate user input and choose the editor
+    if [[ "$choice" =~ ^[nN]$ ]]; then
+      echo ""
+      echo "Aborting $action."
+      return 1  # Indicate that the user aborted the action
+    elif [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= num_running_editors )); then
+      selected_index=$((choice - 1))
+      selected_editor_info="${running_editors[$selected_index]}"
+      selected_editor_name="${selected_editor_info%%:*}"
+      selected_editor_command="${selected_editor_info#*:}"
+      return 0  # Successful selection
+    else
+      echo ""
+      echo "🫥 Invalid choice."
+      echo "Please enter a valid editor number or 'n' to abort."
+    fi
+  done
+}
+
 git_commit() {
   display_checking_message
   detect_running_editors
 
   # If multiple editors are running, prompt the user to choose one
   if (( num_running_editors > 1 )); then
-    echo "Multiple editors are running. Please choose the editor for git commit:"
+    if ! prompt_editor_selection "git commit"; then
+      return 1  # User aborted the action
+    fi
 
-    for i in {1..$num_running_editors}; do
-      editor_info="${running_editors[$i]}"
-      editor_name="${editor_info%%:*}"
-      echo "($i) $editor_name"
-    done
+    echo ""
+    echo "Using $selected_editor_name for git commit."
 
-    while true; do
-      # Read user input
-      read "choice? 👉 "
-
-      # Validate user input and choose the editor
-      if [[ "$choice" =~ ^[nN]$ ]]; then
-        echo ""
-        echo "Aborting git commit."
-        return 1  # Exit the function without committing
-      elif [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= num_running_editors )); then
-        selected_editor_info="${running_editors[$choice]}"
-        selected_editor_name="${selected_editor_info%%:*}"
-        selected_editor_command="${selected_editor_info#*:}"
-
-        echo ""
-        echo "Using $selected_editor_name for git commit."
-
-        GIT_EDITOR="$selected_editor_command" git commit "$@"
-        return 0  # Exit the function after successful commit
-      else
-        echo ""
-        echo "🫥 Invalid choice."
-        echo "Please enter a valid editor number or 'n' to abort."
-        # Re-display the list of editors
-        for i in {1..$num_running_editors}; do
-          editor_info="${running_editors[$i]}"
-          editor_name="${editor_info%%:*}"
-          echo "($i) $editor_name"
-        done
-      fi
-    done
+    GIT_EDITOR="$selected_editor_command" git commit "$@"
+    return 0  # Exit the function after successful commit
 
   # If one editor is running, use it
   elif (( num_running_editors == 1 )); then
-    selected_editor_info="${running_editors[1]}"
+    selected_editor_info="${running_editors[0]}"
     selected_editor_name="${selected_editor_info%%:*}"
     selected_editor_command="${selected_editor_info#*:}"
 
@@ -120,49 +158,19 @@ git_rebase_i() {
 
   # If multiple editors are running, prompt the user to choose one
   if (( num_running_editors > 1 )); then
-    echo "Multiple editors are running. Please choose the editor for git rebase -i:"
+    if ! prompt_editor_selection "git rebase -i"; then
+      return 1  # User aborted the action
+    fi
 
-    for i in {1..$num_running_editors}; do
-      editor_info="${running_editors[$i]}"
-      editor_name="${editor_info%%:*}"
-      echo "($i) $editor_name"
-    done
+    echo ""
+    echo "Using $selected_editor_name for git rebase -i."
 
-    while true; do
-      # Read user input
-      read "choice? 👉 "
-
-      # Validate user input and choose the editor
-      if [[ "$choice" =~ ^[nN]$ ]]; then
-        echo ""
-        echo "Aborting git rebase."
-        return 1  # Exit the function without rebasing
-      elif [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= num_running_editors )); then
-        selected_editor_info="${running_editors[$choice]}"
-        selected_editor_name="${selected_editor_info%%:*}"
-        selected_editor_command="${selected_editor_info#*:}"
-
-        echo ""
-        echo "Using $selected_editor_name for git rebase -i."
-
-        GIT_EDITOR="$selected_editor_command" git rebase -i "$@"
-        return 0  # Exit the function after successful rebase
-      else
-        echo ""
-        echo "🫥 Invalid choice."
-        echo "Please enter a valid editor number or 'n' to abort."
-        # Re-display the list of editors
-        for i in {$num_running_editors}; do
-          editor_info="${running_editors[$i]}"
-          editor_name="${editor_info%%:*}"
-          echo "($i) $editor_name"
-        done
-      fi
-    done
+    GIT_EDITOR="$selected_editor_command" git rebase -i "$@"
+    return 0  # Exit the function after successful rebase
 
   # If one editor is running, use it
   elif (( num_running_editors == 1 )); then
-    selected_editor_info="${running_editors[1]}"
+    selected_editor_info="${running_editors[0]}"
     selected_editor_name="${selected_editor_info%%:*}"
     selected_editor_command="${selected_editor_info#*:}"
 
