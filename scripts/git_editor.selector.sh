@@ -30,8 +30,7 @@ display_checking_message() {
   echo ""
 }
 
-git_commit() {
-  display_checking_message
+detect_running_editors() {
   running_editors=()
 
   # Loop through each editor and check if it's running
@@ -48,6 +47,11 @@ git_commit() {
   done
 
   num_running_editors=${#running_editors[@]}
+}
+
+git_commit() {
+  display_checking_message
+  detect_running_editors
 
   # If multiple editors are running, prompt the user to choose one
   if (( num_running_editors > 1 )); then
@@ -112,22 +116,7 @@ git_commit() {
 
 git_rebase_i() {
   display_checking_message
-  running_editors=()
-
-  # Loop through each editor and check if it's running
-  for editor_info in "${EDITORS[@]}"; do
-    editor_name="${editor_info%%:*}"           # Extract the editor name before the first colon
-    rest="${editor_info#*:}"                   # Remove editor name and first colon
-    process_pattern="${rest%%:*}"              # Extract the process pattern before the next colon
-    editor_command="${rest#*:}"                # Extract the editor command after the second colon
-
-    # Check if the editor process is running
-    if pgrep -f "$process_pattern" > /dev/null; then
-      running_editors+=("$editor_name:$editor_command")
-    fi
-  done
-
-  num_running_editors=${#running_editors[@]}
+  detect_running_editors
 
   # If multiple editors are running, prompt the user to choose one
   if (( num_running_editors > 1 )); then
