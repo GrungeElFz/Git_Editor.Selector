@@ -70,21 +70,26 @@ prompt_editor_selection() {
   done
 }
 
-git_commit() {
+git_with_editor() {
+  local action="$1"      # Description of the git action (e.g., "git commit")
+  local git_command="$2" # The actual git command to run (e.g., "git commit")
+  shift 2
+  local args=("$@")      # Any additional arguments
+
   display_checking_message
   detect_running_editors
 
   # If multiple editors are running, prompt the user to choose one
   if (( num_running_editors > 1 )); then
-    if ! prompt_editor_selection "git commit"; then
+    if ! prompt_editor_selection "$action"; then
       return 1  # User aborted the action
     fi
 
     echo ""
-    echo "Using $selected_editor_name for git commit."
+    echo "Using $selected_editor_name for $action."
 
-    GIT_EDITOR="$selected_editor_command" git commit "$@"
-    return 0  # Exit the function after successful commit
+    GIT_EDITOR="$selected_editor_command" $git_command "${args[@]}"
+    return 0  # Exit the function after successful command
 
   # If one editor is running, use it
   elif (( num_running_editors == 1 )); then
@@ -93,51 +98,24 @@ git_commit() {
     selected_editor_command="${selected_editor_info#*:}"
 
     echo ""
-    echo "Using $selected_editor_name for git commit."
+    echo "Using $selected_editor_name for $action."
 
-    GIT_EDITOR="$selected_editor_command" git commit "$@"
+    GIT_EDITOR="$selected_editor_command" $git_command "${args[@]}"
 
   # If no editors are running, default to the configured editor
   else
     echo "No recognized editor running."
     echo "Defaulting to '$EDITOR'."
-    GIT_EDITOR="$EDITOR" git commit "$@"
+    GIT_EDITOR="$EDITOR" $git_command "${args[@]}"
   fi
 }
 
+git_commit() {
+  git_with_editor "git commit" "git commit" "$@"
+}
+
 git_rebase_i() {
-  display_checking_message
-  detect_running_editors
-
-  # If multiple editors are running, prompt the user to choose one
-  if (( num_running_editors > 1 )); then
-    if ! prompt_editor_selection "git rebase -i"; then
-      return 1  # User aborted the action
-    fi
-
-    echo ""
-    echo "Using $selected_editor_name for git rebase -i."
-
-    GIT_EDITOR="$selected_editor_command" git rebase -i "$@"
-    return 0  # Exit the function after successful rebase
-
-  # If one editor is running, use it
-  elif (( num_running_editors == 1 )); then
-    selected_editor_info="${running_editors[0]}"
-    selected_editor_name="${selected_editor_info%%:*}"
-    selected_editor_command="${selected_editor_info#*:}"
-
-    echo ""
-    echo "Using $selected_editor_name for git rebase -i."
-
-    GIT_EDITOR="$selected_editor_command" git rebase -i "$@"
-
-  # If no editors are running, default to the configured editor
-  else
-    echo "No recognized editor running."
-    echo "Defaulting to '$EDITOR'."
-    GIT_EDITOR="$EDITOR" git rebase -i "$@"
-  fi
+  git_with_editor "git rebase -i" "git rebase -i" "$@"
 }
 
 # Define the 'g' function
