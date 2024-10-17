@@ -70,40 +70,6 @@ prompt_editor_selection() {
   done
 }
 
-prompt_editor_selection() {
-  local action="$1"
-  echo "Multiple editors are running. Please choose the editor for $action:"
-
-  for (( i=0; i<num_running_editors; i++ )); do
-    index=$((i + 1))
-    editor_info="${running_editors[$i]}"
-    editor_name="${editor_info%%:*}"
-    echo "($index) $editor_name"
-  done
-
-  while true; do
-    # Read user input
-    read "choice? 👉 "
-
-    # Validate user input and choose the editor
-    if [[ "$choice" =~ ^[nN]$ ]]; then
-      echo ""
-      echo "Aborting $action."
-      return 1  # Indicate that the user aborted the action
-    elif [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= num_running_editors )); then
-      selected_index=$((choice - 1))
-      selected_editor_info="${running_editors[$selected_index]}"
-      selected_editor_name="${selected_editor_info%%:*}"
-      selected_editor_command="${selected_editor_info#*:}"
-      return 0  # Successful selection
-    else
-      echo ""
-      echo "🫥 Invalid choice."
-      echo "Please enter a valid editor number or 'n' to abort."
-    fi
-  done
-}
-
 git_commit() {
   display_checking_message
   detect_running_editors
