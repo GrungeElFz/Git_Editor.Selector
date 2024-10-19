@@ -65,61 +65,56 @@ prompt_editor_selection() {
   done
 }
 
-git_with_editor() {
-  local action="$1"
-  shift
-  local git_args=("$@")
-
-  display_checking_message
-  detect_running_editors
-
-  if (( num_running_editors > 1 )); then
-    if ! prompt_editor_selection "$action"; then
-      return 1
-    fi
-
-    echo ""
-    echo "Using $selected_editor_name for $action."
-
-    GIT_EDITOR="$selected_editor_command" git "${git_args[@]}"
-    return 0
-
-  elif (( num_running_editors == 1 )); then
-    selected_editor_info="${running_editors[1]}"
-    selected_editor_name="${selected_editor_info%%:*}"
-    selected_editor_command="${selected_editor_info#*:}"
-
-    echo ""
-    echo "Using $selected_editor_name for $action."
-
-    GIT_EDITOR="$selected_editor_command" git "${git_args[@]}"
-
-  else
-    echo "No recognized editor running."
-    echo "Defaulting to '$EDITOR'."
-    GIT_EDITOR="$EDITOR" git "${git_args[@]}"
-  fi
-}
-
-git_commit() {
-  git_with_editor "git commit" commit "$@"
-}
-
-git_rebase_i() {
-  git_with_editor "git rebase -i" rebase -i "$@"
-}
-
 # Define the 'g' function
 g() {
-  if [[ "$1" == "commit" ]]; then
-    shift  # Remove 'commit' from the arguments
-    git_commit "$@"  # Call the custom git_commit function
-  elif [[ "$1" == "rebase" && "$2" == "-i" ]]; then
-    shift 2  # Remove 'rebase' and '-i' from the arguments
-    git_rebase_i "$@"  # Call the custom git_rebase_i function
-  else
-    git "$@"  # Call the regular git command with all arguments
+  # List of git commands that may require an editor
+  local editor_commands=("commit" "rebase" "merge" "pull" "tag" "cherry-pick" "revert")
+
+  # Check if the command is one that may require an editor
+  local cmd="$1"
+  shift
+  local requires_editor=false
+
+  for ecmd in "${editor_commands[@]}"; do
+    if [[ "$cmd" == "$ecmd" ]]; then
+      requires_editor=true
+      break
+    fi
+  done
+
+  if $requires_editor; then
+    # Run the editor selection logic to set GIT_EDITOR
+    display_checking_message
+    detect_running_editors
+
+    if (( num_running_editors > 1 )); then
+      if ! prompt_editor_selection "git $cmd"; then
+        return 1  # User aborted the action
+      fi
+
+      echo ""
+      echo "Using $selected_editor_name as the git editor."
+      GIT_EDITOR="$selected_editor_command"
+    elif (( num_running_editors == 1 )); then
+      selected_editor_info="${running_editors[1]}"
+      selected_editor_name="${selected_editor_info%%:*}"
+      selected_editor_command="${selected_editor_info#*:}"
+
+      echo ""
+      echo "Using $selected_editor_name as the git editor."
+      GIT_EDITOR="$selected_editor_command"
+    else
+      echo "No recognized editor running."
+      echo "Defaulting to '$EDITOR'."
+      GIT_EDITOR="$EDITOR"
+    fi
+
+    # Export GIT_EDITOR so that it's available to git
+    export GIT_EDITOR
   fi
+
+  # Run the git command with any arguments
+  git "$cmd" "$@"
 }
 
 ### END Git_Editor.Selector CONFIGURATION
