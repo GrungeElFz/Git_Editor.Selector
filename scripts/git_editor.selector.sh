@@ -1,4 +1,5 @@
 #!/bin/zsh
+setopt KSH_ARRAYS
 
 ### BEGIN Git_Editor.Selector CONFIGURATION
 
