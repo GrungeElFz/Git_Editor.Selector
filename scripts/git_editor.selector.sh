@@ -67,20 +67,76 @@ prompt_editor_selection() {
 
 # Define the 'g' function
 g() {
-  # List of git commands that may require an editor
-  local editor_commands=("commit" "rebase" "merge" "pull" "tag" "cherry-pick" "revert")
-
-  # Check if the command is one that may require an editor
   local cmd="$1"
   shift
   local requires_editor=false
 
-  for ecmd in "${editor_commands[@]}"; do
-    if [[ "$cmd" == "$ecmd" ]]; then
+  if [[ "$cmd" == "commit" ]]; then
+    requires_editor=true
+    local args=("$@")
+    local i=0
+    while (( i < ${#args[@]} )); do
+      arg="${args[i]}"
+      case "$arg" in
+        -m|--message)
+          requires_editor=false
+          break
+          ;;
+        -m*|--message=*)
+          requires_editor=false
+          break
+          ;;
+        *)
+          ;;
+      esac
+      (( i++ ))
+    done
+  elif [[ "$cmd" == "merge" ]]; then
+    requires_editor=true
+    for arg in "$@"; do
+      if [[ "$arg" == "--no-edit" ]]; then
+        requires_editor=false
+        break
+      fi
+    done
+  elif [[ "$cmd" == "pull" ]]; then
+    requires_editor=true
+    for arg in "$@"; do
+      if [[ "$arg" == "--no-edit" ]]; then
+        requires_editor=false
+        break
+      fi
+    done
+  elif [[ "$cmd" == "rebase" ]]; then
+    requires_editor=false
+    if [[ "$1" == "-i" || "$1" == "--interactive" ]]; then
       requires_editor=true
-      break
     fi
-  done
+  elif [[ "$cmd" == "tag" ]]; then
+    requires_editor=false
+    for arg in "$@"; do
+      if [[ "$arg" == "-a" || "$arg" == "--annotate" ]]; then
+        requires_editor=true
+        break
+      fi
+    done
+  elif [[ "$cmd" == "cherry-pick" ]]; then
+    requires_editor=true
+    for arg in "$@"; do
+      if [[ "$arg" == "--no-edit" ]]; then
+        requires_editor=false
+        break
+      fi
+    done
+  elif [[ "$cmd" == "revert" ]]; then
+    requires_editor=true
+    for arg in "$@"; do
+      if [[ "$arg" == "--no-edit" ]]; then
+        requires_editor=false
+        break
+      fi
+    done
+  fi
 
   if $requires_editor; then
     # Run the editor selection logic to set GIT_EDITOR
