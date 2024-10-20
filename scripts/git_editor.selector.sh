@@ -2,31 +2,38 @@
 
 ### BEGIN Git_Editor.Selector CONFIGURATION
 
-# Define the EDITORS array with supported editors
+# <-- IDE LIST -->
+
+# Define the EDITORS array with supported editors.
+# Each entry consists of "Editor Name : Process Pattern : Editor Command".
 EDITORS=(
   "VS Code:/Applications/Visual Studio Code.app/Contents/MacOS/Electron:code -w"
   "Zed:zed:zed -w"
   "Cursor:/Applications/Cursor.app/Contents/MacOS/Cursor:cursor -w"
 )
 
-# Helper Functions
+# <-- HELPER FUNCTIONS -->
+
+# FUNCTION: Display a message indicating that the script is checking for running editors.
 display_checking_message() {
   echo "Checking for running editors"
   echo "🏃️..."
   echo ""
 }
 
+# FUNCTION: Detect running editors based on the EDITORS array.
+# Populates the 'running_editors' array with the format "Editor Name:Editor Command".
 detect_running_editors() {
   running_editors=()
 
-  # Loop through each editor and check if it's running
+  # Loop through each editor and check if it's running.
   for editor_info in "${EDITORS[@]}"; do
-    editor_name="${editor_info%%:*}"
-    rest="${editor_info#*:}"
-    process_pattern="${rest%%:*}"
-    editor_command="${rest#*:}"
+    editor_name="${editor_info%%:*}"        # Extract the editor name.
+    rest="${editor_info#*:}"                # Remove editor name and first colon.
+    process_pattern="${rest%%:*}"           # Extract the process pattern.
+    editor_command="${rest#*:}"             # Extract the editor command.
 
-    # Check if the editor process is running
+    # Check if the editor process is running.
     if pgrep -f "$process_pattern" > /dev/null; then
       running_editors+=("$editor_name:$editor_command")
     fi
@@ -35,10 +42,12 @@ detect_running_editors() {
   num_running_editors=${#running_editors[@]}
 }
 
+# FUNCTION: Prompt the user to select an editor when multiple editors are running.
 prompt_editor_selection() {
   local action="$1"
   echo "Multiple editors are running. Please choose the editor for $action:"
 
+  # Display the list of running editors.
   for (( i = 1; i <= num_running_editors; i++ )); do
     editor_info="${running_editors[$i]}"
     editor_name="${editor_info%%:*}"
@@ -51,12 +60,12 @@ prompt_editor_selection() {
     if [[ "$choice" =~ ^[nN]$ ]]; then
       echo ""
       echo "Aborting $action."
-      return 1
+      return 1 # User aborted the action.
     elif [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= num_running_editors )); then
       selected_editor_info="${running_editors[$choice]}"
       selected_editor_name="${selected_editor_info%%:*}"
       selected_editor_command="${selected_editor_info#*:}"
-      return 0
+      return 0 # Successful selection.
     else
       echo ""
       echo "🫥 Invalid choice."
@@ -65,6 +74,7 @@ prompt_editor_selection() {
   done
 }
 
+# FUNCTION: Determine if the git command requires an editor.
 requires_editor() {
   local cmd="$1"
   shift
@@ -124,6 +134,7 @@ requires_editor() {
   $requires
 }
 
+# FUNCTION: Set GIT_EDITOR based on running editors and user selection.
 select_git_editor() {
   local action="$1"
 
@@ -157,7 +168,9 @@ select_git_editor() {
   export GIT_EDITOR
 }
 
-# Define the 'g' function
+# <-- MAIN FUNCTION -->
+
+# FUNCTION: git commands wrapper and handle editor selection.
 g() {
   local cmd="$1"
   shift
