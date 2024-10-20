@@ -65,112 +65,112 @@ prompt_editor_selection() {
   done
 }
 
+requires_editor() {
+  local cmd="$1"
+  shift
+  local args=("$@")
+  local requires=false
+
+  case "$cmd" in
+    commit)
+      requires=true
+      local i=0
+      while (( i < ${#args[@]} )); do
+        arg="${args[i]}"
+        case "$arg" in
+          -m|--message)
+            requires=false
+            break
+            ;;
+          -m*|--message=*)
+            requires=false
+            break
+            ;;
+          *)
+            ;;
+        esac
+        (( i++ ))
+      done
+      ;;
+    merge|pull|cherry-pick|revert)
+      requires=true
+      for arg in "${args[@]}"; do
+        if [[ "$arg" == "--no-edit" ]]; then
+          requires=false
+          break
+        fi
+      done
+      ;;
+    rebase)
+      requires=false
+      if [[ "${args[0]}" == "-i" || "${args[0]}" == "--interactive" ]]; then
+        requires=true
+      fi
+      ;;
+    tag)
+      requires=false
+      for arg in "${args[@]}"; do
+        if [[ "$arg" == "-a" || "$arg" == "--annotate" ]]; then
+          requires=true
+          break
+        fi
+      done
+      ;;
+    *)
+      requires=false
+      ;;
+  esac
+
+  $requires
+}
+
+select_git_editor() {
+  local action="$1"
+
+  # Run the editor selection logic to set GIT_EDITOR.
+  display_checking_message
+  detect_running_editors
+
+  if (( num_running_editors > 1 )); then
+    if ! prompt_editor_selection "$action"; then
+      return 1  # User aborted the action.
+    fi
+
+    echo ""
+    echo "Using $selected_editor_name as the git editor."
+    GIT_EDITOR="$selected_editor_command"
+  elif (( num_running_editors == 1 )); then
+    selected_editor_info="${running_editors[1]}"
+    selected_editor_name="${selected_editor_info%%:*}"
+    selected_editor_command="${selected_editor_info#*:}"
+
+    echo ""
+    echo "Using $selected_editor_name as the git editor."
+    GIT_EDITOR="$selected_editor_command"
+  else
+    echo "No recognized editor running."
+    echo "Defaulting to '$EDITOR'."
+    GIT_EDITOR="$EDITOR"
+  fi
+
+  # Export GIT_EDITOR so that it's available to git.
+  export GIT_EDITOR
+}
+
 # Define the 'g' function
 g() {
   local cmd="$1"
   shift
-  local requires_editor=false
+  local args=("$@")
 
-  if [[ "$cmd" == "commit" ]]; then
-    requires_editor=true
-    local args=("$@")
-    local i=0
-    while (( i < ${#args[@]} )); do
-      arg="${args[i]}"
-      case "$arg" in
-        -m|--message)
-          requires_editor=false
-          break
-          ;;
-        -m*|--message=*)
-          requires_editor=false
-          break
-          ;;
-        *)
-          ;;
-      esac
-      (( i++ ))
-    done
-  elif [[ "$cmd" == "merge" ]]; then
-    requires_editor=true
-    for arg in "$@"; do
-      if [[ "$arg" == "--no-edit" ]]; then
-        requires_editor=false
-        break
-      fi
-    done
-  elif [[ "$cmd" == "pull" ]]; then
-    requires_editor=true
-    for arg in "$@"; do
-      if [[ "$arg" == "--no-edit" ]]; then
-        requires_editor=false
-        break
-      fi
-    done
-  elif [[ "$cmd" == "rebase" ]]; then
-    requires_editor=false
-    if [[ "$1" == "-i" || "$1" == "--interactive" ]]; then
-      requires_editor=true
+  if requires_editor "$cmd" "${args[@]}"; then
+    if ! select_git_editor "git $cmd"; then
+      return 1  # User aborted the action.
     fi
-  elif [[ "$cmd" == "tag" ]]; then
-    requires_editor=false
-    for arg in "$@"; do
-      if [[ "$arg" == "-a" || "$arg" == "--annotate" ]]; then
-        requires_editor=true
-        break
-      fi
-    done
-  elif [[ "$cmd" == "cherry-pick" ]]; then
-    requires_editor=true
-    for arg in "$@"; do
-      if [[ "$arg" == "--no-edit" ]]; then
-        requires_editor=false
-        break
-      fi
-    done
-  elif [[ "$cmd" == "revert" ]]; then
-    requires_editor=true
-    for arg in "$@"; do
-      if [[ "$arg" == "--no-edit" ]]; then
-        requires_editor=false
-        break
-      fi
-    done
   fi
 
-  if $requires_editor; then
-    # Run the editor selection logic to set GIT_EDITOR
-    display_checking_message
-    detect_running_editors
-
-    if (( num_running_editors > 1 )); then
-      if ! prompt_editor_selection "git $cmd"; then
-        return 1  # User aborted the action
-      fi
-
-      echo ""
-      echo "Using $selected_editor_name as the git editor."
-      GIT_EDITOR="$selected_editor_command"
-    elif (( num_running_editors == 1 )); then
-      selected_editor_info="${running_editors[1]}"
-      selected_editor_name="${selected_editor_info%%:*}"
-      selected_editor_command="${selected_editor_info#*:}"
-
-      echo ""
-      echo "Using $selected_editor_name as the git editor."
-      GIT_EDITOR="$selected_editor_command"
-    else
-      echo "No recognized editor running."
-      echo "Defaulting to '$EDITOR'."
-      GIT_EDITOR="$EDITOR"
-    fi
-
-    # Export GIT_EDITOR so that it's available to git
-    export GIT_EDITOR
-  fi
-
-  # Run the git command with any arguments
-  git "$cmd" "$@"
+  # Run the git command with any arguments.
+  git "$cmd" "${args[@]}"
 }
 
 ### END Git_Editor.Selector CONFIGURATION
