@@ -139,14 +139,15 @@ setup_configuration() {
 
   # Ask the user to choose the default editor for 'code' alias
   echo ""
-  echo "Select the default editor to be used when you type 'code .':"
+  echo "Select the default editor to be used when you type ' code . ':"
   for (( i = 1; i <= ${#EDITORS[@]}; i++ )); do
     editor_info="${EDITORS[$i]}"
     editor_name="${editor_info%%:*}"
-    echo "$i) $editor_name"
+    echo "($i) $editor_name"
   done
   while true; do
-    read "default_choice?Enter the number of your choice: "
+    echo ""
+    read "default_choice? 👉 "
     if [[ "$default_choice" =~ ^[0-9]+$ ]] && (( default_choice >= 1 && default_choice <= ${#EDITORS[@]} )); then
       default_editor_info="${EDITORS[$default_choice]}"
       default_editor_name="${default_editor_info%%:*}"
