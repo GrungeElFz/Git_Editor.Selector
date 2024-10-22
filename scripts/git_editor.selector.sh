@@ -376,12 +376,14 @@ g() {
     init)
       setup_configuration
       return
-      ;;
+    ;;
+
     config)
       if [[ ! -f "$ALIASES_FILE" ]]; then
         echo "Aliases configuration file not found. Please run 'g init' first."
         return 1
       fi
+
       # Use editor selection logic
       if ! select_git_editor "editing aliases configuration"; then
         return 1
@@ -393,17 +395,22 @@ g() {
       fi
 
       echo "Editing aliases configuration with $SELECTED_EDITOR_COMMAND..."
+
       # Split SELECTED_EDITOR_COMMAND into an array using Zsh parameter expansion
       editor_cmd=(${=SELECTED_EDITOR_COMMAND})
+
       # Add '-w' to the command to wait for the editor to close
       editor_cmd+=("-w")
+
       # Open the aliases file with the selected editor
       "${editor_cmd[@]}" "$ALIASES_FILE" || {
         echo "Failed to open the editor. Please check your editor settings."
         return 1
       }
+
       # Reload the aliases after editing
       load_aliases
+
       echo ""
       echo "✅ Aliases have been saved to:"
       echo "   $ALIASES_FILE"
@@ -411,7 +418,8 @@ g() {
       echo "Please restart the shell and terminal to apply."
       echo "(e.g., run ' source ~/.zshrc ' then restart the terminal)"
       return
-      ;;
+    ;;
+
     *)
       local cmd="$1"
       shift
@@ -425,7 +433,8 @@ g() {
 
       # Run the git command with any arguments.
       git "$cmd" "${args[@]}"
-      ;;
+    ;;
+
   esac
 }
 
