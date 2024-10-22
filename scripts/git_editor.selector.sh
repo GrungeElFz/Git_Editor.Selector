@@ -161,11 +161,11 @@ setup_configuration() {
   echo "code = $default_editor_name  # Default 'code' alias" >> "$ALIASES_FILE"
 
   echo ""
-  echo "Aliases have been saved to $ALIASES_FILE."
-  echo "To apply the aliases, add the following line to your shell configuration (e.g., ~/.zshrc):"
+  echo "✅ Aliases have been saved to:"
+  echo "   $ALIASES_FILE"
   echo ""
-  echo "  source \"$ALIASES_FILE\""
-  echo ""
+  echo "Please restart the shell and terminal to apply."
+  echo "(e.g., run ' source ~/.zshrc ' then restart the terminal)"
 }
 
 # FUNCTION: Open files/directories with the specified editor
