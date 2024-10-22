@@ -91,13 +91,14 @@ setup_configuration() {
       # Generate alias if not specified
       alias_name="$(echo "$editor_name" | tr -d ' ' | tr '[:upper:]' '[:lower:]' | cut -c1-3)"
     fi
-    echo "$i)  $alias_name = $editor_name"
+    echo "($i)  $alias_name = $editor_name"
   done
   echo ""
 
   # Ask the user whether to use default aliases
+  echo "Use default aliases for the editors? (Y/n)"
   while true; do
-    read "use_defaults?Do you want to use default aliases for the editors? (Y/n): "
+    read "use_defaults? 👉 "
     if [[ "$use_defaults" =~ '^[Yy]$|^$' ]]; then
       use_defaults=true
       break
