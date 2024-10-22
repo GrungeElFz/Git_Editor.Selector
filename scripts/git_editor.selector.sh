@@ -81,6 +81,11 @@ setup_configuration() {
   echo "Initial setup:"
   echo ""
   echo "Available editors:"
+
+  # Adjust column widths to minimize gaps
+  printf "%-5s %-6s %s\n" "No." "Alias" "Editor Name"
+  printf "%-5s %-6s %s\n" "---" "-----" "-----------"
+
   for (( i = 1; i <= ${#EDITORS[@]}; i++ )); do
     editor_info="${EDITORS[$i]}"
     editor_name="${editor_info%%:*}"
@@ -91,11 +96,12 @@ setup_configuration() {
       # Generate alias if not specified
       alias_name="$(echo "$editor_name" | tr -d ' ' | tr '[:upper:]' '[:lower:]' | cut -c1-3)"
     fi
-    echo "($i)  $alias_name = $editor_name"
+
+    printf "%-5s %-6s %s\n" "($i)" "$alias_name" "$editor_name"
   done
-  echo ""
 
   # Ask the user whether to use default aliases
+  echo ""
   echo "Use default aliases for the editors? (Y/n)"
   while true; do
     read "use_defaults? 👉 "
