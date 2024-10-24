@@ -293,12 +293,21 @@ requires_editor() {
         (( i++ ))
       done
       ;;
-    merge|pull|cherry-pick|revert)
+    merge|cherry-pick|revert)
       requires=true
       for arg in "${args[@]}"; do
         if [[ "$arg" == "--no-edit" ]]; then
-          requires=false
-          break
+            requires=false
+            break
+        fi
+      done
+      ;;
+    pull)
+      requires=false
+      for arg in "${args[@]}"; do
+        if [[ "$arg" == "--edit" ]]; then
+            requires=true
+            break
         fi
       done
       ;;
