@@ -95,7 +95,7 @@ After installation, perform the initial setup to configure your preferred editor
 1. Run Initialization Command
 
    ```zsh
-   g init
+   g setup
    ```
 
 2. Follow the Interactive Prompts
@@ -145,7 +145,7 @@ g push origin main
 - Initialization
 
   ```zsh
-  g init
+  g setup
   ```
 
   Sets up the Git Editor Selector by configuring editors and aliases.
@@ -274,7 +274,7 @@ To add more editors:
   If you encounter an error about the aliases configuration file not being found, run:
 
   ```zsh
-  g init
+  g setup
   ```
 
 - Editor Not Opening
