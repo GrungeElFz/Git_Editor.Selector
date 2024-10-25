@@ -383,7 +383,7 @@ select_git_editor() {
 # FUNCTION: git commands wrapper and handle editor selection.
 g() {
   case "$1" in
-    init)
+    setup)
       setup_configuration
       return
     ;;
