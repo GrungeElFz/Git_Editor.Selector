@@ -1,5 +1,7 @@
 # Git Editor Selector
 
+![Git Editor Selector's Banner Image](https://raw.githubusercontent.com/GrungeElFz/Astro_Personal.Site/refs/heads/main/public/Banner-Git_Editor.Selector_Ice.png)
+
 `Git Editor Selector` is a dynamic `zsh` script that enhances your Git workflow by allowing you to seamlessly select and manage your preferred code editors. Whether you're working on commits, merges, rebases, or other Git operations that require an editor.
 
 ## Table of Contents
