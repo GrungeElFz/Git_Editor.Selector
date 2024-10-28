@@ -13,6 +13,7 @@ EDITORS=(
   "VS Code:Visual Studio Code:code"
   "Zed:Zed:zed"
   "Cursor:Cursor:cursor"
+  "Web Storm:WebStorm:webstorm"
 )
 
 # Define an associative array of default aliases
@@ -21,6 +22,7 @@ default_aliases=(
   ["VS Code"]="vsc"
   ["Zed"]="zed"
   ["Cursor"]="cur"
+  ["Web Storm"]="web"
 )
 
 # Configuration file paths.
