@@ -236,10 +236,10 @@ To add more editors:
 
    ```zsh
    EDITORS=(
-    "VS Code:Visual Studio Code:code"
-    "Zed:Zed:zed"
-    "Cursor:Cursor:cursor"
-    "Sublime Text:Sublime Text:subl"
+     "Cursor:Cursor:cursor"
+     "VS Code:Visual Studio Code:code"
+     "Web Storm:WebStorm:webstorm"
+     "Zed:Zed:zed"
    )
    ```
 
@@ -249,10 +249,10 @@ To add more editors:
 
    ```zsh
    default_aliases=(
-     ["VS Code"]="vsc"
-     ["Zed"]="zed"
      ["Cursor"]="cur"
-     ["Sublime Text"]="subl"
+     ["VS Code"]="vsc"
+     ["Web Storm"]="web"
+     ["Zed"]="zed"
    )
    ```
 
@@ -276,10 +276,11 @@ To add more editors:
 
   ```zsh
   [aliases]
-  vsc = VS Code
-  zed = Zed
-  cur = Cursor
-  code = VS Code
+    cur = Cursor
+    vsc = VS Code
+    web = Web Storm
+    zed = Zed
+    code = VS Code  # Default 'code' alias
   ```
 
 ## Troubleshooting
