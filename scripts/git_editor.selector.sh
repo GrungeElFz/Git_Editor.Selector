@@ -10,19 +10,19 @@ DEFAULT_EDITOR="code"  # Change 'code' to your preferred editor command
 # Define the EDITORS array with supported editors.
 # Each entry consists of "Editor Name:Process Pattern:Editor Command".
 EDITORS=(
-  "VS Code:Visual Studio Code:code"
-  "Zed:Zed:zed"
   "Cursor:Cursor:cursor"
+  "VS Code:Visual Studio Code:code"
   "Web Storm:WebStorm:webstorm"
+  "Zed:Zed:zed"
 )
 
 # Define an associative array of default aliases
 typeset -A default_aliases
 default_aliases=(
-  ["VS Code"]="vsc"
-  ["Zed"]="zed"
   ["Cursor"]="cur"
+  ["VS Code"]="vsc"
   ["Web Storm"]="web"
+  ["Zed"]="zed"
 )
 
 # Configuration file paths.
