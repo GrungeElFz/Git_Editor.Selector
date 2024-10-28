@@ -34,7 +34,7 @@
 - **Git**: Installed and configured on your system.
 - **Supported Editors**: Ensure your preferred editors are installed and accessible via command line (e.g., `code` for VS Code, `cursor` for Cursor).
 
-> **Important:**
+> **Note:**
 > Don't forget to install the command-line `PATH` for each IDE to make the IDE accessible from the command line.
 > Here’s how you can do it for some common editors:
 > [Visual Studio Code](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line),
