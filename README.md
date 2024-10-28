@@ -193,26 +193,32 @@ g push origin main
 
 By default, Git Editor Selector supports the following editors:
 
-1. Visual Studio Code
+1. Cursor
+
+   - Name: Cursor
+   - Process Pattern: Cursor
+   - Command: `cursor`
+   - Alias: `cur`
+
+2. Visual Studio Code
 
    - Name: VS Code
    - Process Pattern: Visual Studio Code
    - Command: `code`
    - Alias: `vsc`
 
-2. Zed
+3. JetBrains: WebStorm
 
+   - Name: Web Storm
+   - Process Pattern: Web Storm
+   - Command: `webstorm`
+   - Alias: `web`
+
+4. Zed
    - Name: Zed
    - Process Pattern: Zed
    - Command: `zed`
    - Alias: `zed`
-
-3. Cursor
-
-   - Name: Cursor
-   - Process Pattern: Cursor
-   - Command: `cursor`
-   - Alias: `cur`
 
 ### Adding More Editors
 
