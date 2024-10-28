@@ -315,7 +315,7 @@ requires_editor() {
       ;;
     rebase)
       requires=false
-      if [[ "${args[0]}" == "-i" || "${args[0]}" == "--interactive" ]]; then
+      if [[ "${args[1]}" == "-i" || "${args[1]}" == "--interactive" ]]; then
         requires=true
       fi
       ;;
