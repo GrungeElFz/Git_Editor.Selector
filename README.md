@@ -185,9 +185,29 @@ g push origin main
   hint: Waiting for your editor to close the file...
   ```
 
-  - Using `g commit` while having multiple editors running will prompt to choose the editor to be used for this git editor.
+  When multiple editors are active, `g commit` prompts you to select one. It then opens the commit message in the chosen editor and waits for you to close the file.
 
-  - If there's only one editor running, the script will automatically route to the running one.
+- Rebase
+
+  ```zsh
+  g rebase -i HEAD~5
+
+  Checking for running editors
+  🏃️...
+
+  Multiple editors are running. Please choose the editor for git commit:
+  (1) VS Code
+  (2) Zed
+  (3) Cursor
+  👉 3
+
+  Using Cursor as the git editor.
+  hint: Waiting for your editor to close the file...
+  ```
+
+  Similar to commit, `g rebase -i HEAD~<number>` prompts you to select an editor if multiple are running and initiates an interactive rebase in the chosen editor.
+
+> Note: If there's only one editor running, the script will automatically route to the running one.
 
 ## Supported Editors
 
