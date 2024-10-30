@@ -221,19 +221,38 @@ display_checking_message() {
 detect_running_editors() {
   running_editors=()
 
+  # Determine the operating system
+  OS_TYPE="$(uname)"
+
   for editor_info in "${EDITORS[@]}"; do
     editor_name="${editor_info%%:*}"
     rest="${editor_info#*:}"
     process_pattern="${rest%%:*}"
     editor_command="${rest#*:}"
 
-    # Check if the application is running using osascript
-    if osascript -e "tell application \"$process_pattern\" to return running" 2>/dev/null | grep -q "true"; then
-      running_editors+=("$editor_name:$editor_command")
-    fi
+    is_running=false
+
+    if [[ "$OS_TYPE" == "Darwin" ]]; then
+        # MacOS: Use 'osascript' to check if the application is running
+        if osascript -e "tell application \"$process_pattern\" to return running" 2>/dev/null | grep -iq "true"; then
+            is_running=true
+        fi
+    elif [[ "$OS_TYPE" == "Linux" ]]; then
+        # Linux: Use 'pgrep' to check if the process is running
+        if pgrep -x "$process_pattern" >/dev/null 2>&1; then
+            is_running=true
+        fi
+    else
+        echo "Unsupported OS: $OS_TYPE"
+        continue
+        fi
+
+    if $is_running; then
+        running_editors+=("$editor_name:$editor_command")
+        fi
   done
 
-  num_running_editors=${#running_editors[@]}
+    num_running_editors=${#running_editors[@]}
 }
 
 # FUNCTION: Prompt the user to select an editor when multiple editors are running.
