@@ -245,11 +245,11 @@ detect_running_editors() {
     else
         echo "Unsupported OS: $OS_TYPE"
         continue
-        fi
+    fi
 
     if $is_running; then
         running_editors+=("$editor_name:$editor_command")
-        fi
+    fi
   done
 
     num_running_editors=${#running_editors[@]}
