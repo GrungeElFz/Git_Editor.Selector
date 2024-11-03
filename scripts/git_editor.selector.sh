@@ -399,6 +399,55 @@ select_git_editor() {
   export GIT_EDITOR
 }
 
+# FUNCTION: Display help message.
+display_help() {
+  echo "usage: g [-h | --help] [setup | config] <command> [<args>]"
+  echo ""
+  echo ""
+  echo "These are common g commands used in various situations:"
+  echo ""
+  echo "setup and configuration:"
+  echo "   setup     Run the initial setup to configure editor aliases"
+  echo "   config    Edit the aliases configuration file"
+  echo "   clone     Clone a repository into a new directory"
+  echo "   init      Create an empty Git repository or reinitialize an existing one"
+  echo ""
+  echo "work on the current change:"
+  echo "   add       Add file contents to the index"
+  echo "   mv        Move or rename a file, a directory, or a symlink"
+  echo "   restore   Restore working tree files"
+  echo "   rm        Remove files from the working tree and from the index"
+  echo ""
+  echo "examine the history and state:"
+  echo "   status    Show the working tree status"
+  echo "   log       Show commit logs"
+  echo "   diff      Show changes between commits, commit and working tree, etc"
+  echo ""
+  echo "grow, mark, and tweak your common history:"
+  echo "   commit    Record changes to the repository"
+  echo "   branch    List, create, or delete branches"
+  echo "   merge     Join two or more development histories together"
+  echo "   rebase    Reapply commits on top of another base tip"
+  echo ""
+  echo "collaborate:"
+  echo "   fetch     Download objects and refs from another repository"
+  echo "   pull      Fetch from and integrate with another repository or a local branch"
+  echo "   push      Update remote refs along with associated objects"
+  echo ""
+  echo "✨ Tips:"
+  echo "   'g help -a'          All possible commands"
+  echo "   'g help -g'          Git concept guides"
+  echo "   'g help git'         An overview of the system"
+  echo "   'g help everyday'    An overview of daily commands"
+  echo "   'g help <command>'   Read about a specific subcommand"
+}
+
+# FUNCTION: Display detailed help for a specific git command.
+display_command_help() {
+  local cmd="$1"
+  git help "$cmd"
+}
+
 # <-- MAIN FUNCTION -->
 
 # FUNCTION: git commands wrapper and handle editor selection.
@@ -448,6 +497,15 @@ g() {
       echo ""
       echo "Please restart the shell and terminal to apply."
       echo "(e.g., run ' source ~/.zshrc ' then restart the terminal)"
+      return
+    ;;
+
+    help|--help|-h)
+      if [[ -n "$2" ]]; then
+        display_command_help "$2"
+      else
+        display_help
+      fi
       return
     ;;
 
