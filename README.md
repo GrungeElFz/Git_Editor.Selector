@@ -339,6 +339,13 @@ To add more editors:
   source ~/.zshrc
   ```
 
+- Need more help?
+
+  Run `g`, `g help`, `g -h`, or `g --help`:
+  ```zsh
+  g help
+  ```
+
 ## Contributing
 
 Contributions are extreamly welcome! If you have suggestions, improvements, or bug fixes, feel free to open an issue or submit a pull request.
