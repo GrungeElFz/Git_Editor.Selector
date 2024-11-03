@@ -452,6 +452,11 @@ display_command_help() {
 
 # FUNCTION: git commands wrapper and handle editor selection.
 g() {
+  if [[ -z "$1" ]]; then
+    display_help
+    return
+  fi
+
   case "$1" in
     setup)
       setup_configuration
