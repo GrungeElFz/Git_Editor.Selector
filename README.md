@@ -342,6 +342,7 @@ To add more editors:
 - Need more help?
 
   Run `g`, `g help`, `g -h`, or `g --help`:
+
   ```zsh
   g help
   ```
