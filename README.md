@@ -4,6 +4,8 @@
 
 A dynamic `Bash` script that enhances your Git workflow by allowing you to seamlessly select and manage your preferred code editors. Whether you're working on commits, merges, rebases, or other Git operations that require an editor.
 
+> _A documentation website is being developed at the moment : )_
+
 ## Table of Contents
 
 - [Features](#features)
