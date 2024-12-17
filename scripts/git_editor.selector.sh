@@ -91,6 +91,8 @@ setup_configuration() {
   for (( i = 1; i <= ${#EDITORS[@]}; i++ )); do
     editor_info="${EDITORS[$i]}"
     editor_name="${editor_info%%:*}"
+    alias_name="${default_aliases[$editor_name]}"
+
     # Check for default alias in the mapping
     if [[ -n "${default_aliases[$editor_name]}" ]]; then
       alias_name="${default_aliases[$editor_name]}"
@@ -123,19 +125,9 @@ setup_configuration() {
 
   for editor_info in "${EDITORS[@]}"; do
     editor_name="${editor_info%%:*}"
+    alias_name="${default_aliases[$editor_name]}"
 
-    # Use the default alias from the mapping or generate one
-    if [[ -n "${default_aliases[$editor_name]}" ]]; then
-      alias_name="${default_aliases[$editor_name]}"
-    else
-      alias_name="$(echo "$editor_name" | tr -d ' ' | tr '[:upper:]' '[:lower:]' | cut -c1-3)"
-    fi
-
-    if $use_defaults; then
-      # Use alias_name as is
-      :
-    else
-      # Ask the user for a custom alias
+    if ! $use_defaults; then # Only prompt if not using defaults
       read "alias_input?Enter alias for $editor_name (default '$alias_name'): "
       if [[ -n "$alias_input" ]]; then
         alias_name="$alias_input"
