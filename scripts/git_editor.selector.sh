@@ -11,9 +11,9 @@ DEFAULT_EDITOR="code"  # Change 'code' to your preferred editor command
 # Each entry consists of "Editor Name:Process Pattern:Editor Command".
 EDITORS=(
   "Cursor:Cursor:cursor"
-  "VS Code:Visual Studio Code:code"
   "PyCharm (Community Edition):PyCharm CE:pycharm"
   "PyCharm (Professional Edition):PyCharm:pycharm"
+  "Visual Studio Code:Visual Studio Code:code"
   "Web Storm:WebStorm:webstorm"
   "Zed:Zed:zed"
 )
@@ -24,7 +24,7 @@ default_aliases=(
   ["Cursor"]="cur"
   ["PyCharm (Community Edition)"]="charmc"
   ["PyCharm (Professional Edition)"]="charmp"
-  ["VS Code"]="vsc"
+  ["Visual Studio Code"]="vsc"
   ["Web Storm"]="web"
   ["Zed"]="zed"
 )
