@@ -43,9 +43,14 @@ A dynamic `Bash` script that enhances your Git workflow by allowing you to seaml
 > **Note:**
 > Don't forget to install the command-line `PATH` for each IDE to make the IDE accessible from the command line.
 > Here’s how you can do it for some common editors:
+> [Cursor](https://forum.cursor.com/t/how-to-open-cursor-from-terminal/3757/10),
 > [Visual Studio Code](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line),
-> [Web Storm](https://www.jetbrains.com/help/webstorm/2024.2/working-with-the-ide-features-from-command-line.html?Working_with_the_IDE_Features_from_Command_Line=&keymap=macOS#standalone),
-> [Zed](https://zed.dev/features#cli)
+> [Zed](https://zed.dev/features#cli).
+>
+> For JetBrains's IDEs such as [Web Storm](https://www.jetbrains.com/help/webstorm/ƒworking-with-the-ide-features-from-command-line.html) and [PyCharm](https://www.jetbrains.com/help/pycharm/working-with-the-ide-features-from-command-line.html), use [JetBrains Toolbox](https://www.jetbrains.com/toolbox-app) to create command-line launcher.
+>
+> _i.e.,_
+> Toolbox App _->_ Tool actions _->_ Settings _->_ Configuration _->_ Configure shell scripts generation... _->_ Generate shell scripts
 
 ## Installation
 
