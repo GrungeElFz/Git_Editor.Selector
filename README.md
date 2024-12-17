@@ -48,6 +48,10 @@ A dynamic `Bash` script that enhances your Git workflow by allowing you to seaml
 - **Git**: Installed and configured on your system.
 - **Supported Editors**: Ensure your preferred editors are installed and accessible via command line (e.g., `code` for VS Code, `cursor` for Cursor).
 
+  <br/>
+
+---
+
 > **Note:**
 > Don't forget to install the command-line `PATH` for each IDE to make the IDE accessible from the command line.
 > Here’s how you can do it for some common editors:
@@ -59,6 +63,8 @@ A dynamic `Bash` script that enhances your Git workflow by allowing you to seaml
 >
 > _i.e.,_
 > Toolbox App _->_ Tool actions _->_ Settings _->_ Configuration _->_ Configure shell scripts generation... _->_ Generate shell scripts
+
+---
 
 ## Installation
 
