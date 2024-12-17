@@ -238,7 +238,21 @@ By default, Git Editor Selector supports the following editors:
    - Command: `webstorm`
    - Alias: `web`
 
-4. [Zed](https://zed.dev)
+4. [JetBrains: PyCharm (Community Edition)](https://www.jetbrains.com/pycharm/editions)
+
+   - Name: PyCharm (Community Edition)
+   - Process Pattern: PyCharm CE
+   - Command: `pycharm`
+   - Alias: `charmc`
+
+5. [JetBrains: PyCharm (Professional Edition)](https://www.jetbrains.com/pycharm/editions)
+
+   - Name: PyCharm (Professional Edition)
+   - Process Pattern: PyCharm
+   - Command: `pycharm`
+   - Alias: `charmp`
+
+6. [Zed](https://zed.dev)
    - Name: Zed
    - Process Pattern: Zed
    - Command: `zed`
