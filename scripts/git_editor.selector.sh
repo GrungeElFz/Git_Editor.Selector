@@ -12,6 +12,7 @@ DEFAULT_EDITOR="code"  # Change 'code' to your preferred editor command
 EDITORS=(
   "Cursor:Cursor:cursor"
   "VS Code:Visual Studio Code:code"
+  "PyCharm (Community Edition):PyCharm CE:pycharm"
   "Web Storm:WebStorm:webstorm"
   "Zed:Zed:zed"
 )
@@ -20,6 +21,7 @@ EDITORS=(
 typeset -A default_aliases
 default_aliases=(
   ["Cursor"]="cur"
+  ["PyCharm (Community Edition)"]="charmc"
   ["VS Code"]="vsc"
   ["Web Storm"]="web"
   ["Zed"]="zed"
