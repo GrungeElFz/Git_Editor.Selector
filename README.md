@@ -180,7 +180,7 @@ g push origin main
   🏃️...
 
   Multiple editors are running. Please choose the editor for git commit:
-  (1) VS Code
+  (1) Visual Studio Code
   (2) Zed
   (3) Cursor
   👉 2
@@ -200,7 +200,7 @@ g push origin main
   🏃️...
 
   Multiple editors are running. Please choose the editor for git commit:
-  (1) VS Code
+  (1) Visual Studio Code
   (2) Zed
   (3) Cursor
   👉 3
@@ -275,7 +275,7 @@ To add more editors:
    ```zsh
    EDITORS=(
      "Cursor:Cursor:cursor"
-     "VS Code:Visual Studio Code:code"
+     "Visual Studio Code:Visual Studio Code:code"
      "Web Storm:WebStorm:webstorm"
      "Zed:Zed:zed"
    )
@@ -288,7 +288,7 @@ To add more editors:
    ```zsh
    default_aliases=(
      ["Cursor"]="cur"
-     ["VS Code"]="vsc"
+     ["Visual Studio Code"]="vsc"
      ["Web Storm"]="web"
      ["Zed"]="zed"
    )
@@ -315,7 +315,7 @@ To add more editors:
   ```zsh
   [aliases]
     cur = Cursor
-    vsc = VS Code
+    vsc = Visual Studio Code
     web = Web Storm
     zed = Zed
     code = VS Code  # Default 'code' alias
