@@ -34,8 +34,16 @@ A dynamic `Bash` script that enhances your Git workflow by allowing you to seaml
 ## Prerequisites
 
 - **Operating System**:
+
   - MacOS (`osascript` for detecting running applications).
   - Linux (`pgrep` for process detection).
+
+  <br/>
+
+  > _Python version is currently being developed to address the current OS-specific limitations (macOS/Linux) of the shell script, providing broader cross-platform support._
+
+  <br/>
+
 - **Shell**: Zsh
 - **Git**: Installed and configured on your system.
 - **Supported Editors**: Ensure your preferred editors are installed and accessible via command line (e.g., `code` for VS Code, `cursor` for Cursor).
