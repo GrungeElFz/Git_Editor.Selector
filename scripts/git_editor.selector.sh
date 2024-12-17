@@ -13,6 +13,7 @@ EDITORS=(
   "Cursor:Cursor:cursor"
   "VS Code:Visual Studio Code:code"
   "PyCharm (Community Edition):PyCharm CE:pycharm"
+  "PyCharm (Professional Edition):PyCharm:pycharm"
   "Web Storm:WebStorm:webstorm"
   "Zed:Zed:zed"
 )
@@ -22,6 +23,7 @@ typeset -A default_aliases
 default_aliases=(
   ["Cursor"]="cur"
   ["PyCharm (Community Edition)"]="charmc"
+  ["PyCharm (Professional Edition)"]="charmp"
   ["VS Code"]="vsc"
   ["Web Storm"]="web"
   ["Zed"]="zed"
