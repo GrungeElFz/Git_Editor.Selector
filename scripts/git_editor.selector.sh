@@ -157,7 +157,9 @@ setup_configuration() {
   done
 
   # Add 'code' alias to aliases.conf
-  echo "code = $default_editor_name  # Default 'code' alias" >> "$ALIASES_FILE"
+  echo "" >> "$ALIASES_FILE"
+  echo "# Your default 'code' alias #" >> "$ALIASES_FILE"
+  echo "code = $default_editor_name" >> "$ALIASES_FILE"
 
   echo ""
   echo "✔︎  Aliases have been saved to:"
